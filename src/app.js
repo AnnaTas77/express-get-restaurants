@@ -11,4 +11,12 @@ app.get("/restaurants", async (req, res) => {
   res.status(200).send(allRestaurants);
 });
 
+app.get("/restaurants/:id", async (req, res) => {
+  const restaurantId = req.params.id;
+
+  const currentRestaurant = await Restaurant.findByPk(restaurantId);
+
+  res.json(currentRestaurant);
+});
+
 module.exports = app;
