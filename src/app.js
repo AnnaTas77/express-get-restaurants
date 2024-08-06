@@ -25,7 +25,6 @@ app.get("/restaurants/:id", async (req, res) => {
 });
 
 app.post("/restaurants", async (req, res) => {
-  
   if (!req.body) {
     res.status(400).json({ error: "Missing request body." });
   }
@@ -49,8 +48,8 @@ app.post("/restaurants", async (req, res) => {
 });
 
 app.put("/restaurants/:id", async (req, res) => {
-  let restaurantId = req.params.id;
-  let updateObject = req.body;
+  const restaurantId = req.params.id;
+  const updateObject = req.body;
 
   const currentRestaurant = await Restaurant.findByPk(restaurantId);
 
@@ -66,7 +65,7 @@ app.put("/restaurants/:id", async (req, res) => {
 });
 
 app.delete("/restaurants/:id", async (req, res) => {
-  let restaurantId = req.params.id;
+  const restaurantId = req.params.id;
 
   const currentRestaurant = await Restaurant.findByPk(restaurantId);
 
