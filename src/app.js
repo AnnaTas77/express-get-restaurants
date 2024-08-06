@@ -31,14 +31,17 @@ app.post("/restaurants", async (req, res) => {
 
   if (!req.body.name) {
     res.status(400).json({ error: "Missing restaurant name." });
+    return;
   }
 
   if (!req.body.location) {
     res.status(400).json({ error: "Missing restaurant location." });
+    return;
   }
 
   if (!req.body.cuisine) {
     res.status(400).json({ error: "Missing restaurant cuisine." });
+    return;
   }
 
   const createNewRestaurant = await Restaurant.create(req.body);
