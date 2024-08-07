@@ -100,3 +100,11 @@ describe("PUT /restaurants/:id", () => {
     );
   });
 });
+
+describe("DELETE /restaurants/:id", () => {
+  test("deletes the restaurant with the provided id from the array", async () => {
+    const response = await request(app).delete("/restaurants/2");
+    const restaurantAfterDelete = await Restaurant.findByPk(2);
+    expect(restaurantAfterDelete).toBeNull();
+  });
+});
