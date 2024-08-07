@@ -36,3 +36,19 @@ describe("GET /restaurants endpoint", () => {
     );
   });
 });
+
+describe("GET /restaurants/:id", () => {
+  test("returns the correct data", async () => {
+    const response = await request(app).get("/restaurants/1");
+
+    expect(response.body.id).toBe(1);
+
+    expect(response.body).toEqual(
+      expect.objectContaining({
+        name: expect.any(String),
+        location: expect.any(String),
+        cuisine: expect.any(String),
+      })
+    );
+  });
+});
