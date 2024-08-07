@@ -1,0 +1,38 @@
+const { execSync } = require("child_process");
+execSync("npm install");
+execSync("npm run seed");
+const { describe, it, expect, beforeAll, afterEach } = require("@jest/globals");
+
+const request = require("supertest");
+const { db } = require("./db/connection");
+const { Restaurant } = require("./models/index");
+const app = require("./src/app");
+const { seedRestaurant, seedMenu, seedItem } = require("./seedData");
+
+describe("GET /restaurants endpoint", () => {
+  test("testing if the GET request is successful", async () => {
+    const response = await request(app).get("/restaurants");
+    expect(response.status).toBeGreaterThanOrEqual(200);
+    expect(response.status).toBeLessThan(300);
+  });
+
+  test("testing the response data", async () => {
+    const response = await request(app).get("/restaurants");
+    const restaurantsData = response.body;
+
+    expect(Array.isArray(restaurantsData)).toBe(true);
+
+    expect(restaurantsData.length).toBe(seedRestaurant.length);
+
+    // the expect statement below expects an array of only objects and will check all of them
+    expect(restaurantsData).toEqual(
+      restaurantsData.map(() =>
+        expect.objectContaining({
+          name: expect.any(String),
+          location: expect.any(String),
+          cuisine: expect.any(String),
+        })
+      )
+    );
+  });
+});
