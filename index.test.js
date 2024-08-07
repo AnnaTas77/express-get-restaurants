@@ -5,7 +5,7 @@ const { describe, it, expect, beforeAll, afterEach } = require("@jest/globals");
 
 const request = require("supertest");
 const { db } = require("./db/connection");
-const Restaurant = require("./models/index");
+const { Restaurant, Menu, Item } = require("./models/index");
 const app = require("./src/app");
 const { seedRestaurant, seedMenu, seedItem } = require("./seedData");
 
