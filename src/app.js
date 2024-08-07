@@ -1,15 +1,32 @@
 const express = require("express");
 const app = express();
-const Restaurant = require("../models/index");
+const { Restaurant } = require("../models/index");
 const db = require("../db/connection");
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 app.get("/restaurants", async (req, res) => {
-  const allRestaurants = await Restaurant.findAll();
-
-  res.status(200).send(allRestaurants);
+  try {
+    const allRestaurants = await Restaurant.findAll();
+    // const allRestaurants = await Restaurant.findAll({
+    //   include: [
+    //     {
+    //       model: Menu,
+    //       as: "menus",
+    //       include: [
+    //         {
+    //           model: Item,
+    //           as: "items",
+    //         },
+    //       ],
+    //     },
+    //   ],
+    // });
+    res.status(200).send(allRestaurants);
+  } catch (err) {
+    console.error("ERROR: ", err);
+  }
 });
 
 app.get("/restaurants/:id", async (req, res) => {

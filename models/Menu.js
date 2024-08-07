@@ -1,8 +1,8 @@
-const Sequelize = require("sequelize");
+const { Sequelize, DataTypes } = require("sequelize");
 const db = require("../db/connection");
 
 const Menu = db.define("restaurants", {
-  title: Sequelize.STRING,
+  title: DataTypes.STRING,
 });
 
 module.exports = Menu;

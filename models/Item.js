@@ -1,11 +1,11 @@
-const Sequelize = require("sequelize");
+const { Sequelize, DataTypes } = require("sequelize");
 const db = require("../db/connection");
 
 const Item = db.define("item", {
-  name: Sequelize.STRING,
-  image: Sequelize.STRING,
-  price: Sequelize.INTEGER,
-  vegetarian: Sequelize.BOOLEAN,
+  name: DataTypes.STRING,
+  image: DataTypes.STRING,
+  price: DataTypes.INTEGER,
+  vegetarian: DataTypes.BOOLEAN,
 });
 
 module.exports = Item;

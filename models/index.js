@@ -6,10 +6,10 @@ const Item = require("./Item");
 - A Restaurant may have one or more Menu(s), but every Menu has one Restaurant 
 - There are also many Item(s) included in a Menu and an Item can be on many Menus */
 
-Restaurant.hasMany(Menu);
-Menu.belongsTo(Restaurant);
+// Restaurant.hasMany(Menu);
+// Menu.belongsTo(Restaurant);
 
-Menu.belongsToMany(Item, { through: "MenuItems" });
-Item.belongsToMany(Menu, { through: "MenuItems" });
+// Menu.belongsToMany(Item, { through: "MenuItems" });
+// Item.belongsToMany(Menu, { through: "MenuItems" });
 
 module.exports = { Restaurant, Menu, Item };
