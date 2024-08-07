@@ -52,3 +52,27 @@ describe("GET /restaurants/:id", () => {
     );
   });
 });
+
+describe("POST /restaurants", () => {
+  test("returns the restaurants array which has been updated with the new value. ", async () => {
+    const newRestaurant = {
+      name: "Happy",
+      location: "London",
+      cuisine: "Bulgarian",
+    };
+
+    const response = await request(app)
+      .post("/restaurants")
+      .send(newRestaurant);
+
+    // console.log(response.body);
+
+    expect(response.body).toEqual(
+      expect.objectContaining({
+        name: "Happy",
+        location: "London",
+        cuisine: "Bulgarian",
+      })
+    );
+  });
+});
