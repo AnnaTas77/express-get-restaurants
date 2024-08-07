@@ -5,7 +5,7 @@ const { describe, it, expect, beforeAll, afterEach } = require("@jest/globals");
 
 const request = require("supertest");
 const { db } = require("./db/connection");
-const { Restaurant } = require("./models/index");
+const Restaurant = require("./models/index");
 const app = require("./src/app");
 const { seedRestaurant, seedMenu, seedItem } = require("./seedData");
 
@@ -72,6 +72,30 @@ describe("POST /restaurants", () => {
         name: "Happy",
         location: "London",
         cuisine: "Bulgarian",
+      })
+    );
+  });
+});
+
+describe("PUT /restaurants/:id", () => {
+  test("updates the restaurant array with the provided value", async () => {
+    const newRestaurant = {
+      name: "Five Guys",
+      location: "London",
+      cuisine: "American",
+    };
+
+    const response = await request(app)
+      .put("/restaurants/2")
+      .send(newRestaurant);
+
+    const restaurantAfterUpdate = await Restaurant.findByPk(2);
+
+    expect(restaurantAfterUpdate.toJSON()).toEqual(
+      expect.objectContaining({
+        name: "Five Guys",
+        location: "London",
+        cuisine: "American",
       })
     );
   });
