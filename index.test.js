@@ -75,11 +75,45 @@ describe("POST /restaurants", () => {
       })
     );
   });
+
+  test.skip("returns the correct error, when no valid data is provided in the request body", async () => {
+    const nonValidRestaurant = {};
+
+    const response = await request(app)
+      .post("/restaurants")
+      .send(nonValidRestaurant);
+
+    expect(response.status).toBe(400);
+    expect(response.body).toEqual(
+      expect.objectContaining({
+        error: [
+          {
+            type: "field",
+            msg: "Invalid value",
+            path: "name",
+            location: "body",
+          },
+          {
+            type: "field",
+            msg: "Invalid value",
+            path: "location",
+            location: "body",
+          },
+          {
+            type: "field",
+            msg: "Invalid value",
+            path: "cuisine",
+            location: "body",
+          },
+        ],
+      })
+    );
+  });
 });
 
 describe("PUT /restaurants/:id", () => {
   test("updates the restaurant array with the provided value", async () => {
-    const newRestaurant = {
+    const newRestaurantObject = {
       name: "Five Guys",
       location: "London",
       cuisine: "American",
@@ -87,9 +121,11 @@ describe("PUT /restaurants/:id", () => {
 
     const response = await request(app)
       .put("/restaurants/2")
-      .send(newRestaurant);
+      .send(newRestaurantObject);
 
     const restaurantAfterUpdate = await Restaurant.findByPk(2);
+
+    expect(response.status).toBe(201);
 
     expect(restaurantAfterUpdate.toJSON()).toEqual(
       expect.objectContaining({

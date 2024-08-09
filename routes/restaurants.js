@@ -42,36 +42,49 @@ router.get("/:id", async (req, res) => {
   res.json(currentRestaurant);
 });
 
-router.post("/", async (req, res) => {
-  if (!req.body) {
-    res.status(400).json({ error: "Missing request body." });
+router.post(
+  "/",
+  [
+    check("name").notEmpty().trim(),
+    check("location").notEmpty().trim(),
+    check("cuisine").notEmpty().trim(),
+  ],
+  async (req, res) => {
+    const errors = validationResult(req);
+
+    if (!errors.isEmpty()) {
+      res.status(400).send({ error: errors.array() });
+    }
+
+    // if (!req.body) {
+    //   res.status(400).json({ error: "Missing request body." });
+    // }
+
+    // if (!req.body.name) {
+    //   res.status(400).json({ error: "Missing restaurant name." });
+    //   return;
+    // }
+
+    // if (!req.body.location) {
+    //   res.status(400).json({ error: "Missing restaurant location." });
+    //   return;
+    // }
+
+    // if (!req.body.cuisine) {
+    //   res.status(400).json({ error: "Missing restaurant cuisine." });
+    //   return;
+    // }
+
+    const createNewRestaurant = await Restaurant.create(req.body);
+
+    // 201 - Created
+    res.status(201).json(createNewRestaurant);
   }
-
-  if (!req.body.name) {
-    res.status(400).json({ error: "Missing restaurant name." });
-    return;
-  }
-
-  if (!req.body.location) {
-    res.status(400).json({ error: "Missing restaurant location." });
-    return;
-  }
-
-  if (!req.body.cuisine) {
-    res.status(400).json({ error: "Missing restaurant cuisine." });
-    return;
-  }
-
-  const createNewRestaurant = await Restaurant.create(req.body);
-
-  // 201 - Created
-  res.status(201).json(createNewRestaurant);
-});
+);
 
 router.put("/:id", async (req, res) => {
   const restaurantId = req.params.id;
   const updateObject = req.body;
-
   const currentRestaurant = await Restaurant.findByPk(restaurantId);
 
   if (!currentRestaurant) {
@@ -79,10 +92,8 @@ router.put("/:id", async (req, res) => {
     return;
   }
 
-  const updatedRestaurant = await Restaurant.update(updateObject, {
-    where: { id: restaurantId },
-  });
-  res.json(updatedRestaurant);
+  const updatedRestaurant = await currentRestaurant.update(updateObject);
+  res.status(201).send(updatedRestaurant);
 });
 
 router.delete("/:id", async (req, res) => {
