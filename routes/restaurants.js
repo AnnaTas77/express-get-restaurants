@@ -54,6 +54,7 @@ router.post(
 
     if (!errors.isEmpty()) {
       res.status(400).send({ error: errors.array() });
+      return;
     }
 
     // if (!req.body) {
@@ -90,10 +91,10 @@ router.put("/:id", async (req, res) => {
   if (!currentRestaurant) {
     res.status(404).json({ error: "Restaurant not found." });
     return;
+  } else {
+    const updatedRestaurant = await currentRestaurant.update(updateObject);
+    res.status(201).send(updatedRestaurant);
   }
-
-  const updatedRestaurant = await currentRestaurant.update(updateObject);
-  res.status(201).send(updatedRestaurant);
 });
 
 router.delete("/:id", async (req, res) => {

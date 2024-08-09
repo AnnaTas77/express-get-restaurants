@@ -76,7 +76,7 @@ describe("POST /restaurants", () => {
     );
   });
 
-  test.skip("returns the correct error, when no valid data is provided in the request body", async () => {
+  test("returns the correct error, when no valid data is provided in the request body", async () => {
     const nonValidRestaurant = {};
 
     const response = await request(app)
